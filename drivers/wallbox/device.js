@@ -180,7 +180,15 @@ class wallbox_charger extends Homey.Device {
     else
       func = this._api.pauseCharging(this._id);
 
-    await func;
+    try {
+      await func;
+    } catch (error) {
+      // 403: Car is not connected
+      if(error == 403)
+        error = this.home.__("errors.no_car");
+      
+      throw new Error(error);
+    }
   }
 
   async setAmpere(amperage) {
