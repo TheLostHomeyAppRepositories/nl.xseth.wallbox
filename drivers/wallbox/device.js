@@ -111,8 +111,8 @@ class wallbox_charger extends Homey.Device {
       let homeyState = status_util.getChargingState(status);
       this.log(`Setting [status]: ${status}`);
       this.log(`Setting [evcharger_charging_state]: ${homeyState}`);
-      this.setCapabilityValue('evcharger_charging_state', status);
-      this.setCapabilityValue('status', homeyState);
+      this.setCapabilityValue('evcharger_charging_state', homeyState);
+      this.setCapabilityValue('status', status);
     }
     this.triggerStatusChange(curStatus, status);
 
