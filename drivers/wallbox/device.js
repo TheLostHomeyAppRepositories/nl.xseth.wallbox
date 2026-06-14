@@ -189,6 +189,9 @@ class wallbox_charger extends Homey.Device {
       
       throw new Error(error);
     }
+    
+    // Ensure quick update of status
+    await setTimeout(this.poll.bind(this), 5000)
   }
 
   async setAmpere(amperage) {
@@ -198,6 +201,9 @@ class wallbox_charger extends Homey.Device {
      * @param {int} amperage - ampere to set charging to
      */
     await this._api.setMaxChargingCurrent(this._id, amperage);
+
+    // Ensure quick update of status
+    await setTimeout(this.poll.bind(this), 5000)
   }
 }
 
