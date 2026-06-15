@@ -8,6 +8,7 @@ const WallboxAPI = require('../../lib/wallbox_api');
 const statuses = status_util.statuses;
 
 const POLL_INTERVAL = 123;  // Follow API guidelines
+const AUTH_INTERVAL = 300;  // Follow API guidelines
 
 class wallbox_charger extends Homey.Device {
 
@@ -37,7 +38,7 @@ class wallbox_charger extends Homey.Device {
 
     this._name = this.getName();
     this._id = this.getData().id;
-    this._api = new WallboxAPI(user, pass, this.homey);
+    this._api = new WallboxAPI(user, pass, this.homey, AUTH_INTERVAL);
     
     // Perform initial authentication
     await this._api.authenticate();
@@ -48,7 +49,7 @@ class wallbox_charger extends Homey.Device {
 
     // Setup polling of device
     this.polling = this.homey.setInterval(this.poll.bind(this), 1000 * POLL_INTERVAL);
-    this.authentication = this.homey.setInterval(this._api.authenticate.bind(this._api), 1000 * 60 * 1); // Validate authentication every 10m
+    this.authentication = this.homey.setInterval(this._api.authenticate.bind(this._api), 1000 * AUTH_INTERVAL); // Validate authentication every 10m
     await this.poll();
 
     // Register capabilities
